@@ -44,9 +44,6 @@ class PlayerWindow(pyglet.window.Window):
         # Velocity in the y (upward) direction.
         self.dy = 0
 
-        # A list of blocks the player can place. Hit num keys to cycle.
-        self.inventory = helpers.INVENTORY
-
         # The current block the user can place. Hit num keys to cycle.
         ##If the inventory is empty, don't set block
         if(len(helpers.INVENTORY) == 0):
@@ -278,8 +275,8 @@ class PlayerWindow(pyglet.window.Window):
         elif symbol == key.TAB:
             self.flying = not self.flying
         elif symbol in self.num_keys:
-            index = (symbol - self.num_keys[0]) % len(self.inventory)
-            self.block = self.inventory[index]
+            index = (symbol - self.num_keys[0]) % helpers.inventory
+            self.block = helpers.inventory[index]
 
     def on_key_release(self, symbol, modifiers):
         """ Called when the player releases a key. See pyglet docs for key
