@@ -1,3 +1,4 @@
+import helpers
 from helpers import *
 
 MOUSE_MOVEMENT_SPEED_x = 10;

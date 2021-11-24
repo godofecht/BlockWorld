@@ -1,9 +1,6 @@
-import helpers
-from helpers import *
 from Model import Model
 from Inventory import Inventory
 from Settings import *
-
 
 
 class PlayerWindow (pyglet.window.Window):

@@ -1,6 +1,5 @@
 import helpers
 from helpers import *
-from Model import Model
 
 class Inventory():
     def __init__ (self):

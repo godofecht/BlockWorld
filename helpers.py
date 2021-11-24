@@ -120,8 +120,7 @@ def get_sight_vector(self):
     return (dx, dy, dz)
 
 def get_motion_vector(self):
-    """ Returns the current motion vector indicating the velocity of the
-    player.
+    """ Returns the player's velocity vector
 
     Returns
     -------
