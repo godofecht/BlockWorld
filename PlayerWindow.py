@@ -4,10 +4,12 @@ from Model import Model
 from Inventory import Inventory
 from Settings import *
 
-class PlayerWindow(pyglet.window.Window):
 
-    def __init__(self, *args, **kwargs):
-        super(PlayerWindow, self).__init__(*args, **kwargs)
+
+class PlayerWindow (pyglet.window.Window):
+
+    def __init__ (self, *args, **kwargs):
+        super (PlayerWindow, self).__init__ (*args, **kwargs)
 
         # Whether or not the window exclusively captures the mouse.
         self.exclusive = False
@@ -79,8 +81,6 @@ class PlayerWindow(pyglet.window.Window):
         super(PlayerWindow, self).set_exclusive_mouse(exclusive)
         self.exclusive = exclusive
 
-
-
     def update(self, dt):
         """ This method is scheduled to be called repeatedly by the pyglet
         clock.
@@ -135,7 +135,6 @@ class PlayerWindow(pyglet.window.Window):
 
 
 ######IMPLEMENT PLAYER COLLISION##############################################
-
     def collide(self, position, height):
         """ Checks to see if the player at the given `position` and `height`
         is colliding with any blocks in the world.
@@ -184,7 +183,8 @@ class PlayerWindow(pyglet.window.Window):
 
 
 #PLAYER CONTROLS#########################################################
-    def on_mouse_motion (self, x, y, dx, dy):
+
+    def on_mouse_drag (self, x, y, dx, dy, buttons, modifiers):
         """ Called when the player moves the mouse.
 
         Parameters
@@ -205,6 +205,26 @@ class PlayerWindow(pyglet.window.Window):
         y = max(-90, min(90, y))
         self.rotation = (x, y)
 
+    def on_mouse_motion (self, x, y, dx, dy):
+        """ Called when the player moves the mouse.
+
+        Parameters
+        ----------
+        x, y : int
+            The coordinates of the mouse click. Always center of the screen if
+            the mouse is captured.
+        dx, dy : float
+            The movement of the mouse.
+
+        """
+        self.dX = dx
+        self.dY = dy
+    #    if self.exclusive:
+        m = 0.15
+        x, y = self.rotation
+        x, y = x + dx * m, y + dy * m
+        y = max(-90, min(90, y))
+        self.rotation = (x, y)
 
 
     def on_mouse_press (self, x, y, button, modifiers):
@@ -245,7 +265,6 @@ class PlayerWindow(pyglet.window.Window):
     #        self.set_exclusive_mouse(True)
 
 
-
     def on_key_press (self, symbol, modifiers):
         """ Called when the player presses a key. See pyglet docs for key
         mappings.
@@ -277,7 +296,7 @@ class PlayerWindow(pyglet.window.Window):
             index = (symbol - self.num_keys[0])
             print(index);
 
-    def on_key_release(self, symbol, modifiers):
+    def on_key_release (self, symbol, modifiers):
         """ Called when the player releases a key. See pyglet docs for key
         mappings.
 
@@ -300,22 +319,6 @@ class PlayerWindow(pyglet.window.Window):
 
 
 ##################################################################################
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     def on_resize(self, width, height):
         """ Called when the window is resized to a new `width` and `height`.
