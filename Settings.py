@@ -3,7 +3,7 @@ from helpers import *
 MOUSE_MOVEMENT_SPEED_x = 10;
 MOUSE_MOVEMENT_SPEED_Y = 10;
 
-TICKS_PER_SEC = 60
+
 
 WALKING_SPEED = 5
 FLYING_SPEED = 15
@@ -17,7 +17,7 @@ MAX_JUMP_HEIGHT = 1.0 # About the height of a block.
 #    t = - v_0 / a
 # Use t and the desired MAX_JUMP_HEIGHT to solve for v_0 (jump speed) in
 #    s = s_0 + v_0 * t + (a * t^2) / 2
-JUMP_SPEED = math.sqrt(2 * GRAVITY * MAX_JUMP_HEIGHT)
+JUMP_SPEED = math.sqrt (2 * GRAVITY * MAX_JUMP_HEIGHT)
 TERMINAL_VELOCITY = 50
 
 PLAYER_HEIGHT = 2

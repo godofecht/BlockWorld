@@ -244,7 +244,6 @@ class PlayerWindow(pyglet.window.Window):
     #    else:
     #        self.set_exclusive_mouse(True)
 
-        self.on_mouse_motion (x, y, MOUSE_MOVEMENT_SPEED_x, MOUSE_MOVEMENT_SPEED_Y)
 
 
     def on_key_press (self, symbol, modifiers):
