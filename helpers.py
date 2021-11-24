@@ -41,7 +41,10 @@ PLAYER_HEIGHT = 2
 
 def cube_vertices(x, y, z, n):
     """ Return the vertices of the cube at position x, y, z with size 2*n.
-
+        Probably the most shameful way to write this out. There is a way to do
+        it algorithmically. Tip: Find a fast way to count binary and then
+        substitute digits for operations. Is it necessary? Does it improve the
+        way the code is written? I'm not really sure.
     """
     return [
         x-n,y+n,z-n, x-n,y+n,z+n, x+n,y+n,z+n, x+n,y+n,z-n,  # top
