@@ -275,8 +275,8 @@ class PlayerWindow(pyglet.window.Window):
         elif symbol == key.TAB:
             self.flying = not self.flying
         elif symbol in self.num_keys:
-            index = (symbol - self.num_keys[0]) % helpers.inventory
-            self.block = helpers.inventory[index]
+            index = (symbol - self.num_keys[0])
+            print(index);
 
     def on_key_release(self, symbol, modifiers):
         """ Called when the player releases a key. See pyglet docs for key
