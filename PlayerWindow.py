@@ -186,9 +186,30 @@ class PlayerWindow(pyglet.window.Window):
 
 
 #PLAYER CONTROLS#########################################################
+    def on_mouse_motion (self, x, y, dx, dy):
+        """ Called when the player moves the mouse.
+
+        Parameters
+        ----------
+        x, y : int
+            The coordinates of the mouse click. Always center of the screen if
+            the mouse is captured.
+        dx, dy : float
+            The movement of the mouse.
+
+        """
+        self.dX = dx
+        self.dY = dy
+    #    if self.exclusive:
+        m = 0.15
+        x, y = self.rotation
+        x, y = x + dx * m, y + dy * m
+        y = max(-90, min(90, y))
+        self.rotation = (x, y)
 
 
-    def on_mouse_press(self, x, y, button, modifiers):
+
+    def on_mouse_press (self, x, y, button, modifiers):
         """ Called when a mouse button is pressed. See pyglet docs for button
         amd modifier mappings.
 
@@ -220,38 +241,12 @@ class PlayerWindow(pyglet.window.Window):
             texture = self.model.world[block]
             if texture != STONE:
                 self.model.remove_block(block)
-                helpers.inventory[0] = STONE
-
-
-
-
-
+                helpers.INVENTORY.append(STONE)
 
     #    else:
     #        self.set_exclusive_mouse(True)
 
-        on_mouse_motion(self,x,y,dx,dy)
-
-    def on_mouse_motion(self, x, y, dx, dy):
-        """ Called when the player moves the mouse.
-
-        Parameters
-        ----------
-        x, y : int
-            The coordinates of the mouse click. Always center of the screen if
-            the mouse is captured.
-        dx, dy : float
-            The movement of the mouse.
-
-        """
-        self.dX = dx
-        self.dY = dy
-    #    if self.exclusive:
-        m = 0.15
-        x, y = self.rotation
-        x, y = x + dx * m, y + dy * m
-        y = max(-90, min(90, y))
-        self.rotation = (x, y)
+        self.on_mouse_motion (x, y, 10, 10)
 
 
     def on_key_press(self, symbol, modifiers):

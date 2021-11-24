@@ -14,8 +14,6 @@ class Inventory():
         glColor3f(1,0,0)
         draw_rect(self.InventoryXPos,self.InventoryYPos,self.InventoryWidth,self.InventoryHeight)
 
-
-
     def drawIndividualItem(self,index):
         glColor3f(0,1,0)
         draw_rect(self.InventoryXPos + 37+self.InventoryWidth/9*index,self.InventoryYPos,self.InventoryWidth/10,self.InventoryHeight*0.1)
