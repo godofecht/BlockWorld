@@ -2,6 +2,7 @@ import helpers
 from helpers import *
 from Model import Model
 from Inventory import Inventory
+from Settings import *
 
 class PlayerWindow(pyglet.window.Window):
 
@@ -229,8 +230,8 @@ class PlayerWindow(pyglet.window.Window):
 #        if self.exclusive:
 
 
-        vector = get_sight_vector(self)
-        block, previous = self.model.hit_test(self.position, vector)
+        vector = get_sight_vector (self)
+        block, previous = self.model.hit_test (self.position, vector)
         if (button == mouse.RIGHT) or \
                 ((button == mouse.LEFT) and (modifiers & key.MOD_CTRL)):
             # ON OSX, control + left click = right click.
@@ -240,16 +241,16 @@ class PlayerWindow(pyglet.window.Window):
         elif button == pyglet.window.mouse.LEFT and block:
             texture = self.model.world[block]
             if texture != STONE:
-                self.model.remove_block(block)
-                helpers.INVENTORY.append(STONE)
+                self.model.remove_block (block)
+                helpers.INVENTORY.append (STONE)
 
     #    else:
     #        self.set_exclusive_mouse(True)
 
-        self.on_mouse_motion (x, y, 10, 10)
+        self.on_mouse_motion (x, y, MOUSE_MOVEMENT_SPEED_x, MOUSE_MOVEMENT_SPEED_Y)
 
 
-    def on_key_press(self, symbol, modifiers):
+    def on_key_press (self, symbol, modifiers):
         """ Called when the player presses a key. See pyglet docs for key
         mappings.
 
