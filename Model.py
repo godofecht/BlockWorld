@@ -82,7 +82,7 @@ class Model(object):
             Whether or not to draw the block immediately.
         """
         if position in self.world:
-            self.remove_block(position, immediate)
+            self.remove_block (position, immediate)
         self.world[position] = texture
         self.sectors.setdefault(sectorize(position), []).append(position)
         if immediate:

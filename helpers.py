@@ -173,9 +173,8 @@ HEIGHT = 800
 
 #Object parameters here
 GRASS = tex_coords((1, 0), (0, 1), (0, 0))
-#GRASS = tex_coords((2, 1), (2, 1), (2, 2))
-#SAND = tex_coords((1, 1), (1, 1), (1, 1))
-#BRICK = tex_coords((2, 0), (2, 0), (2, 0))
+SAND = tex_coords((1, 1), (1, 1), (1, 1))
+BRICK = tex_coords((2, 0), (2, 0), (2, 0))
 STONE = tex_coords((2, 1), (2, 1), (2, 1))
 
 FACES = [
@@ -186,5 +185,3 @@ FACES = [
     ( 0, 0, 1),
     ( 0, 0,-1),
 ]
-
-INVENTORY = []

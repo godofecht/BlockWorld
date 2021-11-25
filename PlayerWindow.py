@@ -44,12 +44,15 @@ class PlayerWindow (pyglet.window.Window):
         # Velocity in the y (upward) direction.
         self.dy = 0
 
+        #Instance of the Inventory that handles held items
+        self.inventory = Inventory()
+
         # The current block the user can place. Hit num keys to cycle.
         ##If the inventory is empty, don't set block
-        if(len(helpers.INVENTORY) == 0):
+        if (self.inventory.getSize() == 0):
             self.block = None
         else:
-            self.block = helpers.INVENTORY[0]
+            self.block = self.inventory.getCurrentlyIndexedItem()
 
         # Convenience list of num keys.
         self.num_keys = [
@@ -59,8 +62,7 @@ class PlayerWindow (pyglet.window.Window):
         # Instance of the model that handles the world.
         self.model = Model()
 
-        #Instance of the Inventory that handles held items
-        self.inventory = Inventory()
+
 
         # The label that is displayed in the top left of the canvas.
         self.label = pyglet.text.Label('', font_name='Arial', font_size=18,
@@ -246,18 +248,20 @@ class PlayerWindow (pyglet.window.Window):
 
 
         vector = get_sight_vector (self)
-        block, previous = self.model.hit_test (self.position, vector)
+        hit_pos, previous = self.model.hit_test (self.position, vector)
         if (button == mouse.RIGHT) or \
                 ((button == mouse.LEFT) and (modifiers & key.MOD_CTRL)):
             # ON OSX, control + left click = right click.
             if previous:
-                if(self.block != None):
-                    self.model.add_block(previous, self.block)
-        elif button == pyglet.window.mouse.LEFT and block:
-            texture = self.model.world[block]
-            if texture != STONE:
-                self.model.remove_block (block)
-                helpers.INVENTORY.append (STONE)
+                self.block = self.inventory.getCurrentlyIndexedItem()
+                if (self.block != None):
+                    self.model.add_block (previous, self.block)
+#                    self.inventory.removeItem (self.block)
+        elif button == pyglet.window.mouse.LEFT and hit_pos:
+            block = self.model.world [hit_pos]
+            if block != STONE:
+                self.model.remove_block (hit_pos)
+                self.inventory.addItem (block)
 
     #    else:
     #        self.set_exclusive_mouse(True)
@@ -292,6 +296,8 @@ class PlayerWindow (pyglet.window.Window):
             self.flying = not self.flying
         elif symbol in self.num_keys:
             index = (symbol - self.num_keys[0])
+            self.inventory.setIndex (index)
+            self.block = self.inventory.getCurrentlyIndexedItem()
             print(index);
 
     def on_key_release (self, symbol, modifiers):
