@@ -10,21 +10,52 @@ class Inventory():
         self.item_count = []
         self.InventoryWidth = WIDTH * 0.7
         self.InventoryHeight = HEIGHT * 0.1
-        self.InventoryXPos = (WIDTH - self.InventoryWidth )/2.0
+        self.InventoryXPos = (WIDTH - self.InventoryWidth ) / 2.0
         self.InventoryYPos = 40
         self.index = 0
 
+
+    def draw_3D_inventory_block (self, batch, group, x, y, z, texture):
+        vertex_data = cube_vertices (x +10,10, 10, 10)
+        batch.add (24, GL_QUADS, group, ('v3f/static', vertex_data), ('t2f/static', texture))
+
     def draw (self):
-        glColor3f (1,0,0)
-        draw_rect (self.InventoryXPos,self.InventoryYPos,self.InventoryWidth,self.InventoryHeight)
+        return
+#        glColor3f (1,0,0)
+#        draw_rect (self.InventoryXPos, self.InventoryYPos, self.InventoryWidth, self.InventoryHeight)
 
-    def drawIndividualItem(self,index):
-        glColor3f (0,1,0)
-        draw_rect (self.InventoryXPos + 37+self.InventoryWidth/9*index,self.InventoryYPos,self.InventoryWidth/10,self.InventoryHeight*0.1)
+    def drawIndividualItem (self, index, batch, group, player_pos, player_rot):
+        """ I think that inventory items should be drawn either as 2D sprites or 3D icons. I'm not
+            sure yet. However I am sure that I don't like the sprite sheet method of loading
+            sprites. However we may not have another choice due to speed constraints, I guess?
 
-    def drawItems (self):
-#        for index in range (len (self.item_list)):
-#            self.drawIndividualItem (index)
+            No. I have decided on 2D sprites that we pre-render.
+        """
+#        glColor3f (0,1,0)
+#        tex.target = self.item_list[index]
+#        glEnable (GL_TEXTURE_2D)
+#        glBindTexture (GL_TEXTURE_2D, tex.id)
+        x = self.InventoryXPos + 37 + self.InventoryWidth / 9 * index
+        y = self.InventoryYPos
+
+
+
+        forward_x = math.cos (player_rot[0]) * math.cos (player_rot[1])
+        forward_y = math.cos (player_rot[0]) * math.sin (player_rot[1])
+        forward_z = math.sin (player_rot[0])
+
+        transformed_x = player_pos[0]# + forward_x * 2
+        transformed_y = player_pos[1]# + forward_y * 2
+        transformed_z = player_pos[2]# + forward_z * 2
+
+
+#        self.draw_3D_inventory_block (batch, group, transformed_x, transformed_y, transformed_z, GRASS)
+#        draw_rect (self.InventoryXPos + 37+self.InventoryWidth/9*index, self.InventoryYPos, self.InventoryWidth / 10.0, self.InventoryHeight)
+
+    def drawItems (self, batch, group, player_pos, player_rot):
+        """ maybe I should wrap batch and group as another object"""
+        for index in range (0, len (self.item_list)):
+            self.drawIndividualItem (index, batch, group, player_pos, player_rot)
         return
 
     def getCurrentlyIndexedItem (self):

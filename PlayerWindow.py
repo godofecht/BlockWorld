@@ -377,14 +377,14 @@ class PlayerWindow (pyglet.window.Window):
         """
         self.clear()
         self.set_3d()
-        glColor3d(1, 1, 1)
+        glColor3d (1, 1, 1)
         self.model.batch.draw()
         self.draw_focused_block()
         self.set_2d()
         self.draw_label()
         self.draw_reticle()
         self.inventory.draw()
-        self.inventory.drawItems()
+        self.inventory.drawItems (self.model.batch, self.model.group, self.position, self.rotation)
 
 
 #####SELECTION
@@ -398,10 +398,10 @@ class PlayerWindow (pyglet.window.Window):
         if block:
             x, y, z = block
             vertex_data = cube_vertices(x, y, z, 0.51)
-            glColor3d(0, 0, 0)
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
-            pyglet.graphics.draw(24, GL_QUADS, ('v3f/static', vertex_data))
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
+            glColor3d (0, 0, 0)
+            glPolygonMode (GL_FRONT_AND_BACK, GL_LINE)
+            pyglet.graphics.draw (24, GL_QUADS, ('v3f/static', vertex_data))
+            glPolygonMode (GL_FRONT_AND_BACK, GL_FILL)
 
 
 ######HUD####################################
