@@ -14,7 +14,8 @@ from pyglet.window import key, mouse
 MOUSE_MOVEMENT_SPEED_x = 10;
 MOUSE_MOVEMENT_SPEED_Y = 10;
 
-
+width = 640
+height = 480
 
 WALKING_SPEED = 5
 FLYING_SPEED = 15

@@ -5,7 +5,7 @@ from helpers import *
     that allows both for access into it as well as encapsulation of the draw functions.
 """
 class Inventory():
-    def __init__ (self):
+    def __init__ (self, batch, group):
         self.item_list = []
         self.item_count = []
         self.InventoryWidth = WIDTH * 0.7
@@ -13,18 +13,25 @@ class Inventory():
         self.InventoryXPos = (WIDTH - self.InventoryWidth ) / 2.0
         self.InventoryYPos = 40
         self.index = 0
+        self.batch = batch
+        self.group = group
+
+        self.v = self.draw_3D_inventory_block (10, 10, 10, GRASS)
 
 
-    def draw_3D_inventory_block (self, batch, group, x, y, z, texture):
-        vertex_data = cube_vertices (x +10,10, 10, 10)
-        batch.add (24, GL_QUADS, group, ('v3f/static', vertex_data), ('t2f/static', texture))
+    def draw_3D_inventory_block (self, x, y, z, texture):
+        vertex_data = cube_vertices (x, y, z, 1)
+        self.batch.invalidate()
+        glOrtho(0, width, 0, height, -1, 1)
+        v = self.batch.add (24, GL_QUADS, self.group, ('v3f/static', vertex_data), ('t2f/static', texture))
+        return v
 
     def draw (self):
         return
 #        glColor3f (1,0,0)
 #        draw_rect (self.InventoryXPos, self.InventoryYPos, self.InventoryWidth, self.InventoryHeight)
 
-    def drawIndividualItem (self, index, batch, group, player_pos, player_rot):
+    def drawIndividualItem (self, index, group, player_pos, camera_rot):
         """ I think that inventory items should be drawn either as 2D sprites or 3D icons. I'm not
             sure yet. However I am sure that I don't like the sprite sheet method of loading
             sprites. However we may not have another choice due to speed constraints, I guess?
@@ -40,22 +47,25 @@ class Inventory():
 
 
 
-        forward_x = math.cos (player_rot[0]) * math.cos (player_rot[1])
-        forward_y = math.cos (player_rot[0]) * math.sin (player_rot[1])
-        forward_z = math.sin (player_rot[0])
+        forward_x = math.cos (math.radians(camera_rot[0])) * math.sin (math.radians(camera_rot[1]))
+        forward_y = math.cos (math.radians(camera_rot[0])) * math.sin (math.radians(camera_rot[1]))
+        forward_z = math.sin (math.radians(camera_rot[0]))
 
-        transformed_x = player_pos[0]# + forward_x * 2
-        transformed_y = player_pos[1]# + forward_y * 2
-        transformed_z = player_pos[2]# + forward_z * 2
+        transformed_x = player_pos[0] + forward_x * 10
+        transformed_y = player_pos[1] + forward_y * 10
+        transformed_z = player_pos[2] + forward_z * 10
 
 
-#        self.draw_3D_inventory_block (batch, group, transformed_x, transformed_y, transformed_z, GRASS)
+        self.v.vertices = cube_vertices (transformed_x, transformed_y, transformed_z, 2);
+
+#        batch.draw()
+
 #        draw_rect (self.InventoryXPos + 37+self.InventoryWidth/9*index, self.InventoryYPos, self.InventoryWidth / 10.0, self.InventoryHeight)
 
-    def drawItems (self, batch, group, player_pos, player_rot):
+    def drawItems (self, batch, group, player_pos, camera_rot):
         """ maybe I should wrap batch and group as another object"""
         for index in range (0, len (self.item_list)):
-            self.drawIndividualItem (index, batch, group, player_pos, player_rot)
+            self.drawIndividualItem (index, group, player_pos, camera_rot)
         return
 
     def getCurrentlyIndexedItem (self):

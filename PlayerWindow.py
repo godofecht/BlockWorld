@@ -44,15 +44,7 @@ class PlayerWindow (pyglet.window.Window):
         # Velocity in the y (upward) direction.
         self.dy = 0
 
-        #Instance of the Inventory that handles held items
-        self.inventory = Inventory()
 
-        # The current block the user can place. Hit num keys to cycle.
-        ##If the inventory is empty, don't set block
-        if (self.inventory.getSize() == 0):
-            self.block = None
-        else:
-            self.block = self.inventory.getCurrentlyIndexedItem()
 
         # Convenience list of num keys.
         self.num_keys = [
@@ -62,7 +54,15 @@ class PlayerWindow (pyglet.window.Window):
         # Instance of the model that handles the world.
         self.model = Model()
 
+        #Instance of the Inventory that handles held items
+        self.inventory = Inventory (self.model.batch, self.model.group)
 
+        # The current block the user can place. Hit num keys to cycle.
+        ##If the inventory is empty, don't set block
+        if (self.inventory.getSize() == 0):
+            self.block = None
+        else:
+            self.block = self.inventory.getCurrentlyIndexedItem()
 
         # The label that is displayed in the top left of the canvas.
         self.label = pyglet.text.Label('', font_name='Arial', font_size=18,
@@ -378,13 +378,15 @@ class PlayerWindow (pyglet.window.Window):
         self.clear()
         self.set_3d()
         glColor3d (1, 1, 1)
+        self.inventory.draw()
+        self.inventory.drawItems (self.model.batch, self.model.group, self.position, self.rotation)
         self.model.batch.draw()
         self.draw_focused_block()
         self.set_2d()
         self.draw_label()
         self.draw_reticle()
-        self.inventory.draw()
-        self.inventory.drawItems (self.model.batch, self.model.group, self.position, self.rotation)
+
+
 
 
 #####SELECTION
