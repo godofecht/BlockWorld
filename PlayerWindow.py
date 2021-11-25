@@ -256,7 +256,7 @@ class PlayerWindow (pyglet.window.Window):
                 self.block = self.inventory.getCurrentlyIndexedItem()
                 if (self.block != None):
                     self.model.add_block (previous, self.block)
-#                    self.inventory.removeItem (self.block)
+                    self.inventory.removeItem (self.block)
         elif button == pyglet.window.mouse.LEFT and hit_pos:
             block = self.model.world [hit_pos]
             if block != STONE:
@@ -298,7 +298,6 @@ class PlayerWindow (pyglet.window.Window):
             index = (symbol - self.num_keys[0])
             self.inventory.setIndex (index)
             self.block = self.inventory.getCurrentlyIndexedItem()
-            print(index);
 
     def on_key_release (self, symbol, modifiers):
         """ Called when the player releases a key. See pyglet docs for key

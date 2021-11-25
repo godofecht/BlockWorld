@@ -6,8 +6,8 @@ from helpers import *
 """
 class Inventory():
     def __init__ (self):
-        self.item_list = [GRASS]
-        self.item_count = [1]
+        self.item_list = []
+        self.item_count = []
         self.InventoryWidth = WIDTH * 0.7
         self.InventoryHeight = HEIGHT * 0.1
         self.InventoryXPos = (WIDTH - self.InventoryWidth )/2.0
@@ -34,7 +34,6 @@ class Inventory():
             return (self.item_list [self.index])
 
     def addItem (self, item_name):
-        print (item_name)
         for i in range (0, len (self.item_list)):
             if (self.item_list [i] == item_name):
                 self.item_count [i] = self.item_count [i] + 1
@@ -42,13 +41,12 @@ class Inventory():
         """ if the code doesn't break, we then add the item and its count to their respective lists """
         self.item_list.append (item_name)
         self.item_count.append (1)
-        print ("failed")
 
     def removeItem (self, item_name):
         for i in range (0, len (self.item_list)):
             if (self.item_list[i] == item_name):
                 self.item_count[i] = self.item_count[i] - 1
-                if self.item_count <= 0:
+                if self.item_count[i] <= 0:
                     del self.item_list[i]
                     del self.item_count[i]
 
