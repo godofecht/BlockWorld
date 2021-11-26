@@ -5,6 +5,8 @@ import math
 import random
 import time
 
+import numpy
+
 from collections import deque
 from pyglet import image
 from pyglet.gl import *

@@ -16,7 +16,7 @@ class Inventory():
         self.batch = batch
         self.group = group
 
-        self.v = self.draw_3D_inventory_block (10, 10, 10, GRASS)
+        self.v = self.draw_3D_inventory_block (0, 10, 0, GRASS)
 
 
     def draw_3D_inventory_block (self, x, y, z, texture):
@@ -45,18 +45,41 @@ class Inventory():
         x = self.InventoryXPos + 37 + self.InventoryWidth / 9 * index
         y = self.InventoryYPos
 
-
-
-        forward_x = math.cos (math.radians(camera_rot[0])) * math.sin (math.radians(camera_rot[1]))
-        forward_y = math.cos (math.radians(camera_rot[0])) * math.sin (math.radians(camera_rot[1]))
-        forward_z = math.sin (math.radians(camera_rot[0]))
+        forward_x = math.sin (math.radians(camera_rot[0])) * math.cos (math.radians(camera_rot[1]))
+        forward_y = math.sin (math.radians(camera_rot[1]))
+        forward_z = math.cos (math.radians(camera_rot[0])) * math.cos (math.radians(camera_rot[1]))
 
         transformed_x = player_pos[0] + forward_x * 10
         transformed_y = player_pos[1] + forward_y * 10
-        transformed_z = player_pos[2] + forward_z * 10
+        transformed_z = player_pos[2] - forward_z * 10
 
+        self.v.vertices = cube_vertices (transformed_x, transformed_y, transformed_z, 1)
+        num_vertices = self.v.get_size() * 3
+        center_pos = getCenterOfVertices (self.v, num_vertices)
 
-        self.v.vertices = cube_vertices (transformed_x, transformed_y, transformed_z, 2);
+        for index in range (0, num_vertices, 3):
+            xvert = index
+            yvert = index + 1
+            zvert = index + 2
+
+            camera_rot_z = numpy.arctan(math.sqrt(camera_rot[1] * camera_rot[1] + camera_rot[0] * camera_rot[0]))
+            camera_rot_z = 0
+
+            rotated_vector = rotatePoint ((self.v.vertices[xvert],
+                                           self.v.vertices[yvert],
+                                           self.v.vertices[zvert]),
+                #                           (0, 10, 0),
+                                    #        (0, 0, -camera_rot[1]), #this constrains vertically at 4 points on the curve
+                                          (0, -camera_rot[0], 0), # This constrains horizontally
+                                           center_pos)
+
+    #        print(camera_rot)
+
+            self.v.vertices[xvert] = rotated_vector[0]
+            self.v.vertices[yvert] = rotated_vector[1]
+            self.v.vertices[zvert] = rotated_vector[2]
+
+    #        print(a)
 
 #        batch.draw()
 

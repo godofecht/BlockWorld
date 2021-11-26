@@ -164,18 +164,57 @@ HEIGHT = 800
 
 
 ###############################
+##Vector maths
+
+def getCenterOfVertices (v, num_vertices):
+    x = []
+    y = []
+    z = []
+    for index in range (0, int (num_vertices/3)):
+        x.append(v.vertices[index * 3])
+        y.append(v.vertices[index * 3 + 1])
+        z.append(v.vertices[index * 3 + 2])
+
+    center = (max(x)+min(x))/2., (max(y)+min(y))/2., (max(z)+min(z))/2.
+    return center
+
+def rotatePoint (pos_vector, rot_vector, center):
+    """ An unnecessary amount of fuckery went into sorting this out """
+    vX = pos_vector[0] - center[0]
+    vY = pos_vector[1] - center[1]
+    vZ = pos_vector[2] - center[2]
+
+    rX = math.radians (rot_vector[0])
+    rY = math.radians (rot_vector[1])
+    rZ = math.radians (rot_vector[2])
+
+    #vX,vY,vZ is the vector coords
+    #rx,rY,rZ is the rotation angles in radians
+    #Xrotation
+    xX = vX
+    xY = vY * math.cos (rX) - vZ * math.sin (rX)
+    xZ = vY * math.sin (rX) + vZ * math.cos (rX)
+    #Yrotation
+    yX = xZ * math.sin (rY) + xX * math.cos (rY)
+    yY = xY
+    yZ = xZ * math.cos (rY) - xX * math.sin (rY)
+    #Zrotation
+    zX = yX * math.cos (rZ) - yY * math.sin (rZ)
+    zY = yX * math.sin (rZ) + yY * math.cos (rZ)
+    zZ = yZ
+
+    return (zX + center[0], zY + center[1], zZ + center[2])
 
 
-
-
+###############################
 
 
 
 #Object parameters here
-GRASS = tex_coords((1, 0), (0, 1), (0, 0))
-SAND = tex_coords((1, 1), (1, 1), (1, 1))
-BRICK = tex_coords((2, 0), (2, 0), (2, 0))
-STONE = tex_coords((2, 1), (2, 1), (2, 1))
+GRASS = tex_coords ((1, 0), (0, 1), (0, 0))
+SAND = tex_coords ((1, 1), (1, 1), (1, 1))
+BRICK = tex_coords ((2, 0), (2, 0), (2, 0))
+STONE = tex_coords ((2, 1), (2, 1), (2, 1))
 
 FACES = [
     ( 0, 1, 0),
