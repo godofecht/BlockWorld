@@ -57,23 +57,25 @@ class Inventory():
         num_vertices = self.v.get_size() * 3
         center_pos = getCenterOfVertices (self.v, num_vertices)
 
+        pitch = camera_rot[1]
+        yaw = camera_rot[0]
+
         for index in range (0, num_vertices, 3):
             xvert = index
             yvert = index + 1
             zvert = index + 2
 
-            camera_rot_z = numpy.arctan(math.sqrt(camera_rot[1] * camera_rot[1] + camera_rot[0] * camera_rot[0]))
-            camera_rot_z = 0
+
 
             rotated_vector = rotatePoint ((self.v.vertices[xvert],
                                            self.v.vertices[yvert],
                                            self.v.vertices[zvert]),
                 #                           (0, 10, 0),
-                                    #        (0, 0, -camera_rot[1]), #this constrains vertically at 4 points on the curve
-                                          (0, -camera_rot[0], 0), # This constrains horizontally
+                                            (pitch, -yaw, 0), #this constrains vertically at 4 points on the curve
+                                    #       (0, -camera_rot[0], 0), # This constrains horizontally
+                                    #        (-camera_rot[0], 0, 0),
                                            center_pos)
 
-    #        print(camera_rot)
 
             self.v.vertices[xvert] = rotated_vector[0]
             self.v.vertices[yvert] = rotated_vector[1]
