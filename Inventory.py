@@ -45,13 +45,15 @@ class Inventory():
         x = self.InventoryXPos + 37 + self.InventoryWidth / 9 * index
         y = self.InventoryYPos
 
-        forward_x = math.sin (math.radians(camera_rot[0])) * math.cos (math.radians(camera_rot[1]))
-        forward_y = math.sin (math.radians(camera_rot[1]))
-        forward_z = math.cos (math.radians(camera_rot[0])) * math.cos (math.radians(camera_rot[1]))
+        forward_vector = getForwardVector (camera_rot[0], camera_rot[1])
+        transform_vector = Vector (0,1,0)
+        player_vector = Vector (player_pos[0], player_pos[1], player_pos[2])
+        right_vector = CrossProduct (forward_vector, transform_vector)
+        up_vector = CrossProduct (right_vector, forward_vector)
 
-        transformed_x = player_pos[0] + forward_x * 10
-        transformed_y = player_pos[1] + forward_y * 10
-        transformed_z = player_pos[2] - forward_z * 10
+        transformed_x = player_pos[0] + forward_vector.x * 10
+        transformed_y = player_pos[1] + forward_vector.y * 10
+        transformed_z = player_pos[2] - forward_vector.z * 10
 
         self.v.vertices = cube_vertices (transformed_x, transformed_y, transformed_z, 1)
         num_vertices = self.v.get_size() * 3
@@ -65,21 +67,32 @@ class Inventory():
             yvert = index + 1
             zvert = index + 2
 
-
-
             rotated_vector = rotatePoint ((self.v.vertices[xvert],
                                            self.v.vertices[yvert],
                                            self.v.vertices[zvert]),
-                #                           (0, 10, 0),
-                                            (pitch, -yaw, 0), #this constrains vertically at 4 points on the curve
-                                    #       (0, -camera_rot[0], 0), # This constrains horizontally
-                                    #        (-camera_rot[0], 0, 0),
+                                           (pitch, -yaw, 0), #this constrains vertically at 4 points on the curve
                                            center_pos)
 
 
             self.v.vertices[xvert] = rotated_vector[0]
             self.v.vertices[yvert] = rotated_vector[1]
             self.v.vertices[zvert] = rotated_vector[2]
+
+
+            self.v.vertices[xvert] = self.v.vertices[xvert] - up_vector.x * 5
+            self.v.vertices[yvert] = self.v.vertices[yvert] - up_vector.y * 5
+            self.v.vertices[zvert] = self.v.vertices[zvert] + up_vector.z * 5
+
+            #Opposite signage because left
+            self.v.vertices[xvert] = self.v.vertices[xvert] + right_vector.x * 5
+            self.v.vertices[yvert] = self.v.vertices[yvert] + right_vector.y * 5
+            self.v.vertices[zvert] = self.v.vertices[zvert] - right_vector.z * 5
+
+        """ now we have to move the cube into its respective slot """
+
+
+
+#            self.v.vertices[xvert] = transform_to_player_view (self.v.vertices[xvert], -30, -30)
 
     #        print(a)
 

@@ -166,6 +166,34 @@ HEIGHT = 800
 ###############################
 ##Vector maths
 
+class Vector:
+    x = 0
+    y = 0
+    z = 0
+
+    def  __init__(self, x, y, z):
+        self.x = x
+        self.y = y
+        self.z = z
+
+def CrossProduct (vector1, vector2):
+    crossed_vector = numpy.cross ([vector1.x,vector1.y,vector1.z],[vector2.x,vector2.y,vector2.z])
+    return Vector (crossed_vector[0], crossed_vector[1], crossed_vector[2])
+
+
+
+def getForwardVector (yaw, pitch):
+    forward_x = math.sin (math.radians (yaw)) * math.cos (math.radians (pitch))
+    forward_y = math.sin (math.radians (pitch))
+    forward_z = math.cos (math.radians (yaw)) * math.cos (math.radians (pitch))
+    forward_vector = Vector (forward_x, forward_y, forward_z)
+    return forward_vector
+
+def transform_to_player_view (vertex, dx, dy):
+
+    return vertex
+
+
 def getCenterOfVertices (v, num_vertices):
     x = []
     y = []
