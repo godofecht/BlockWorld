@@ -153,8 +153,8 @@ def get_motion_vector(self):
 ##Graphics helper Functions
 
 def draw_rect(x, y, width, height):
-    pyglet.graphics.draw(4, pyglet.gl.GL_QUADS,
-        ('v2f', [x, y, x + width, y, x + width, y + height, x, y + height]))
+    pyglet.graphics.draw (4, pyglet.gl.GL_QUADS,
+                         ('v2f', [x, y, x + width, y, x + width, y + height, x, y + height]))
 
 
 #Window Params
@@ -176,22 +176,69 @@ class Vector:
         self.y = y
         self.z = z
 
+    def __add__(self, other):
+        return Vector (self.x + other.x, self.y + other.y, self.z + other.z)
+
+    def __mul__(self, value):
+        return Vector (self.x * value, self.y * value, self.z * value)
+
+    def __str__(self):
+        print("X: " + self.x)
+        print("Y: " + self.y)
+        print("Z: " + self.z)
+
+    def getArray(self):
+        return [self.x, self.y, self.z]
+
 def CrossProduct (vector1, vector2):
-    crossed_vector = numpy.cross ([vector1.x,vector1.y,vector1.z],[vector2.x,vector2.y,vector2.z])
+    crossed_vector = numpy.cross ([vector1.x, vector1.y, vector1.z],[vector2.x, vector2.y, vector2.z])
     return Vector (crossed_vector[0], crossed_vector[1], crossed_vector[2])
 
-
-
 def getForwardVector (yaw, pitch):
-    forward_x = math.sin (math.radians (yaw)) * math.cos (math.radians (pitch))
-    forward_y = math.sin (math.radians (pitch))
-    forward_z = math.cos (math.radians (yaw)) * math.cos (math.radians (pitch))
-    forward_vector = Vector (forward_x, forward_y, forward_z)
+    forward_vector = Vector (math.sin (math.radians (yaw)) * math.cos (math.radians (pitch)),
+                             math.sin (math.radians (pitch)),
+                             math.cos (math.radians (yaw)) * math.cos (math.radians (pitch)))
     return forward_vector
 
 def transform_to_player_view (vertex, dx, dy):
-
+    #This is unfinished
     return vertex
+
+import numpy as np
+
+#This has been copied.... no plagiarism. it seems?
+# RPY/Euler angles to Rotation Vector
+def euler_to_rotVec(yaw, pitch, roll):
+    # compute the rotation matrix
+    Rmat = euler_to_rotMat(yaw, pitch, roll)
+
+    theta = math.acos(((Rmat[0, 0] + Rmat[1, 1] + Rmat[2, 2]) - 1) / 2)
+    sin_theta = math.sin(theta)
+    if sin_theta == 0:
+        rx, ry, rz = 0.0, 0.0, 0.0
+    else:
+        multi = 1 / (2 * math.sin(theta))
+        rx = multi * (Rmat[2, 1] - Rmat[1, 2]) * theta
+        ry = multi * (Rmat[0, 2] - Rmat[2, 0]) * theta
+        rz = multi * (Rmat[1, 0] - Rmat[0, 1]) * theta
+    return rx, ry, rz
+
+def euler_to_rotMat(yaw, pitch, roll):
+    Rz_yaw = np.array([
+        [np.cos(yaw), -np.sin(yaw), 0],
+        [np.sin(yaw),  np.cos(yaw), 0],
+        [          0,            0, 1]])
+    Ry_pitch = np.array([
+        [ np.cos(pitch), 0, np.sin(pitch)],
+        [             0, 1,             0],
+        [-np.sin(pitch), 0, np.cos(pitch)]])
+    Rx_roll = np.array([
+        [1,            0,             0],
+        [0, np.cos(roll), -np.sin(roll)],
+        [0, np.sin(roll),  np.cos(roll)]])
+    # R = RzRyRx
+    rotMat = np.dot(Rz_yaw, np.dot(Ry_pitch, Rx_roll))
+    return rotMat
 
 
 def getCenterOfVertices (v, num_vertices):
@@ -233,6 +280,36 @@ def rotatePoint (pos_vector, rot_vector, center):
 
     return (zX + center[0], zY + center[1], zZ + center[2])
 
+def rotatePointWithOffset (pos_vector, rot_vector, center, rot_offset):
+    """ An unnecessary amount of fuckery went into sorting this out """
+    vX = pos_vector[0] - center[0]
+    vY = pos_vector[1] - center[1]
+    vZ = pos_vector[2] - center[2]
+
+    rX = math.radians (rot_vector[0]) + math.radians(rot_offset[0])
+    rY = math.radians (rot_vector[1]) + math.radians(rot_offset[1])
+    rZ = math.radians (rot_vector[2]) + math.radians(rot_offset[2])
+
+    print("rX:" + str(math.degrees(rX)))
+    print("rY:" + str(math.degrees(rY)))
+    print("rZ:" + str(math.degrees(rZ)))
+
+    #vX,vY,vZ is the vector coords
+    #rx,rY,rZ is the rotation angles in radians
+    #Xrotation
+    xX = vX
+    xY = vY * math.cos (rX) - vZ * math.sin (rX)
+    xZ = vY * math.sin (rX) + vZ * math.cos (rX)
+    #Yrotation
+    yX = xZ * math.sin (rY) + xX * math.cos (rY)
+    yY = xY
+    yZ = xZ * math.cos (rY) - xX * math.sin (rY)
+    #Zrotation
+    zX = yX * math.cos (rZ) - yY * math.sin (rZ)
+    zY = yX * math.sin (rZ) + yY * math.cos (rZ)
+    zZ = yZ
+
+    return (zX + center[0], zY + center[1], zZ + center[2])
 
 ###############################
 

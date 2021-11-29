@@ -16,6 +16,8 @@ class Inventory():
         self.batch = batch
         self.group = group
 
+        self.pos_z = 0
+
         self.v = self.draw_3D_inventory_block (0, 10, 0, GRASS)
 
 
@@ -36,7 +38,7 @@ class Inventory():
             sure yet. However I am sure that I don't like the sprite sheet method of loading
             sprites. However we may not have another choice due to speed constraints, I guess?
 
-            No. I have decided on 2D sprites that we pre-render.
+            3D is the way to gooo
         """
 #        glColor3f (0,1,0)
 #        tex.target = self.item_list[index]
@@ -45,7 +47,10 @@ class Inventory():
         x = self.InventoryXPos + 37 + self.InventoryWidth / 9 * index
         y = self.InventoryYPos
 
-        forward_vector = getForwardVector (camera_rot[0], camera_rot[1])
+        yaw = camera_rot[0]
+        pitch = camera_rot[1]
+
+        forward_vector = getForwardVector (yaw, pitch )
         transform_vector = Vector (0,1,0)
         player_vector = Vector (player_pos[0], player_pos[1], player_pos[2])
         right_vector = CrossProduct (forward_vector, transform_vector)
@@ -59,34 +64,70 @@ class Inventory():
         num_vertices = self.v.get_size() * 3
         center_pos = getCenterOfVertices (self.v, num_vertices)
 
-        pitch = camera_rot[1]
-        yaw = camera_rot[0]
+
+        self.pos_z = self.pos_z + 1
 
         for index in range (0, num_vertices, 3):
             xvert = index
             yvert = index + 1
             zvert = index + 2
 
+
+            #rotates cube to face player
             rotated_vector = rotatePoint ((self.v.vertices[xvert],
                                            self.v.vertices[yvert],
                                            self.v.vertices[zvert]),
-                                           (pitch, -yaw, 0), #this constrains vertically at 4 points on the curve
+                                           (pitch, -yaw, 0),
                                            center_pos)
-
 
             self.v.vertices[xvert] = rotated_vector[0]
             self.v.vertices[yvert] = rotated_vector[1]
             self.v.vertices[zvert] = rotated_vector[2]
 
 
-            self.v.vertices[xvert] = self.v.vertices[xvert] - up_vector.x * 5
-            self.v.vertices[yvert] = self.v.vertices[yvert] - up_vector.y * 5
-            self.v.vertices[zvert] = self.v.vertices[zvert] + up_vector.z * 5
+#            self.v.vertices[xvert] = self.v.vertices[xvert] - up_vector.x * 5
+#            self.v.vertices[yvert] = self.v.vertices[yvert] - up_vector.y * 5
+#            self.v.vertices[zvert] = self.v.vertices[zvert] + up_vector.z * 5
 
             #Opposite signage because left
-            self.v.vertices[xvert] = self.v.vertices[xvert] + right_vector.x * 5
-            self.v.vertices[yvert] = self.v.vertices[yvert] + right_vector.y * 5
-            self.v.vertices[zvert] = self.v.vertices[zvert] - right_vector.z * 5
+#            self.v.vertices[xvert] = self.v.vertices[xvert] + right_vector.x * 5
+#            self.v.vertices[yvert] = self.v.vertices[yvert] + right_vector.y * 5
+#            self.v.vertices[zvert] = self.v.vertices[zvert] - right_vector.z * 5
+
+
+            positioning_vector = right_vector * 10
+
+            print("Pitch: " + str(pitch))
+            print("Yaw:" + str(yaw))
+
+            #rotates cube with player as center as a pseudo positioning
+            #i need to calculate new pitch and yaw from line of sight, pitch and yaw
+
+            #yaw and pitch only provide rotational information in 360 degrees. I need to make sure
+            #that the rotation from x axis is always kept in mind, and then add rotation based on that
+
+
+
+            rotated_vector = rotatePoint ((self.v.vertices[xvert],
+                                           self.v.vertices[yvert],
+                                           self.v.vertices[zvert]),
+                                          (20, 0, 0), #this shit is in the x and y and z axes. I need to SHIFT THE AXES SUCH THAT THE FORWARD VECTOR IS THE X AXES
+                                           player_pos)
+
+    #        print("Rotated_x" + str(rotated_vector[0]))
+    #        print("Rotated_y" + str(rotated_vector[1]))
+    #        print("Rotated_z" + str(rotated_vector[2]))
+
+            self.v.vertices[xvert] = rotated_vector[0]
+            self.v.vertices[yvert] = rotated_vector[1]
+            self.v.vertices[zvert] = rotated_vector[2]
+
+            pivotPoint = [0,0,0]
+            pivotPoint[0] = player_pos[0] + right_vector.x * 5
+            pivotPoint[1] = player_pos[1] + right_vector.y * 5
+            pivotPoint[2] = player_pos[2] - right_vector.z * 5
+
+
 
         """ now we have to move the cube into its respective slot """
 
