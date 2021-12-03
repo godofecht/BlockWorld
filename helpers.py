@@ -223,7 +223,7 @@ def euler_to_rotVec(yaw, pitch, roll):
         rz = multi * (Rmat[1, 0] - Rmat[0, 1]) * theta
     return rx, ry, rz
 
-def euler_to_rotMat(yaw, pitch, roll):
+def euler_to_rotMat (yaw, pitch, roll):
     Rz_yaw = np.array([
         [np.cos(yaw), -np.sin(yaw), 0],
         [np.sin(yaw),  np.cos(yaw), 0],
@@ -246,9 +246,9 @@ def getCenterOfVertices (v, num_vertices):
     y = []
     z = []
     for index in range (0, int (num_vertices/3)):
-        x.append(v.vertices[index * 3])
-        y.append(v.vertices[index * 3 + 1])
-        z.append(v.vertices[index * 3 + 2])
+        x.append (v.vertices[index * 3])
+        y.append (v.vertices[index * 3 + 1])
+        z.append (v.vertices[index * 3 + 2])
 
     center = (max(x)+min(x))/2., (max(y)+min(y))/2., (max(z)+min(z))/2.
     return center
@@ -262,6 +262,33 @@ def rotatePoint (pos_vector, rot_vector, center):
     rX = math.radians (rot_vector[0])
     rY = math.radians (rot_vector[1])
     rZ = math.radians (rot_vector[2])
+
+    #vX,vY,vZ is the vector coords
+    #rx,rY,rZ is the rotation angles in radians
+    #Xrotation
+    xX = vX
+    xY = vY * math.cos (rX) - vZ * math.sin (rX)
+    xZ = vY * math.sin (rX) + vZ * math.cos (rX)
+    #Yrotation
+    yX = xZ * math.sin (rY) + xX * math.cos (rY)
+    yY = xY
+    yZ = xZ * math.cos (rY) - xX * math.sin (rY)
+    #Zrotation
+    zX = yX * math.cos (rZ) - yY * math.sin (rZ)
+    zY = yX * math.sin (rZ) + yY * math.cos (rZ)
+    zZ = yZ
+
+    return (zX + center[0], zY + center[1], zZ + center[2])
+
+def rotatePointRadians (pos_vector, rot_vector, center):
+    """ An unnecessary amount of fuckery went into sorting this out """
+    vX = pos_vector[0] - center[0]
+    vY = pos_vector[1] - center[1]
+    vZ = pos_vector[2] - center[2]
+
+    rX =  (rot_vector[0])
+    rY =  (rot_vector[1])
+    rZ =  (rot_vector[2])
 
     #vX,vY,vZ is the vector coords
     #rx,rY,rZ is the rotation angles in radians
