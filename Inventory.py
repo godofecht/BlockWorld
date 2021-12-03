@@ -24,7 +24,7 @@ class Inventory():
     def draw_3D_inventory_block (self, x, y, z, texture):
         vertex_data = cube_vertices (x, y, z, 1)
         self.batch.invalidate()
-        glOrtho(0, width, 0, height, -1, 1)
+#        glOrtho(0, width, 0, height, -1, 1)
         v = self.batch.add (24, GL_QUADS, self.group, ('v3f/static', vertex_data), ('t2f/static', texture))
         return v
 

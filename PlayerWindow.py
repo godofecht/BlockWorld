@@ -357,19 +357,19 @@ class PlayerWindow (pyglet.window.Window):
 
         """
         width, height = self.get_size()
-        glEnable(GL_DEPTH_TEST)
+        glEnable (GL_DEPTH_TEST)
         viewport = self.get_viewport_size()
         glViewport(0, 0, max(1, viewport[0]), max(1, viewport[1]))
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
         gluPerspective(65.0, width / float(height), 0.1, 60.0)
-        glMatrixMode(GL_MODELVIEW)
+        glMatrixMode (GL_MODELVIEW)
         glLoadIdentity()
         x, y = self.rotation
         glRotatef(x, 0, 1, 0)
         glRotatef(-y, math.cos(math.radians(x)), 0, math.sin(math.radians(x)))
         x, y, z = self.position
-        glTranslatef(-x, -y, -z)
+        glTranslatef (-x, -y, -z)
 
     def on_draw(self):
         """ Called by pyglet to draw the canvas.
@@ -378,14 +378,15 @@ class PlayerWindow (pyglet.window.Window):
         self.clear()
         self.set_3d()
         glColor3d (1, 1, 1)
-        self.model.batch.draw()
 
+        self.model.batch.draw()
+        self.draw_focused_block()
+        glColor3d (1, 1, 1)
         glDisable(GL_DEPTH_TEST)
         self.inventory.drawItems (self.model.batch, self.model.group, self.position, self.rotation)
         self.inventory.draw()
-
         glEnable(GL_DEPTH_TEST)
-        self.draw_focused_block()
+
         self.set_2d()
         self.draw_label()
         self.draw_reticle()
@@ -399,11 +400,11 @@ class PlayerWindow (pyglet.window.Window):
         crosshairs.
 
         """
-        vector = get_sight_vector(self)
-        block = self.model.hit_test(self.position, vector)[0]
+        vector = get_sight_vector (self)
+        block = self.model.hit_test (self.position, vector)[0]
         if block:
             x, y, z = block
-            vertex_data = cube_vertices(x, y, z, 0.51)
+            vertex_data = cube_vertices (x, y, z, 0.51)
             glColor3d (0, 0, 0)
             glPolygonMode (GL_FRONT_AND_BACK, GL_LINE)
             pyglet.graphics.draw (24, GL_QUADS, ('v3f/static', vertex_data))
