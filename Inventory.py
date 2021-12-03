@@ -15,9 +15,6 @@ class Inventory():
         self.index = 0
         self.batch = batch
         self.group = group
-
-        self.pos_z = 0
-
         self.item_v = []
         self.item_v.append (self.draw_3D_inventory_block (0, 1, 0, GRASS))
         self.item_v.append (self.draw_3D_inventory_block (1, 1, 0, STONE))
@@ -42,10 +39,7 @@ class Inventory():
 
             3D is the way to gooo
         """
-#        glColor3f (0,1,0)
-#        tex.target = self.item_list[index]
-#        glEnable (GL_TEXTURE_2D)
-#        glBindTexture (GL_TEXTURE_2D, tex.id)
+
         x = self.InventoryXPos + 37 + self.InventoryWidth / 9 * index
         y = self.InventoryYPos
 
@@ -77,14 +71,12 @@ class Inventory():
         center_pos = getCenterOfVertices (item_vertices, num_vertices)
 
 
-        self.pos_z = self.pos_z + 1
-
         for index in range (0, num_vertices, 3):
             xvert = index
             yvert = index + 1
             zvert = index + 2
 
-            #rotates cube to face player
+            #rotates cube by offset
             rotated_vector = rotatePoint ((item_vertices.vertices[xvert],
                                            item_vertices.vertices[yvert],
                                            item_vertices.vertices[zvert]),
@@ -181,7 +173,7 @@ class Inventory():
             if (self.item_list [i] == item_name):
                 self.item_count [i] = self.item_count [i] + 1
                 return
-        """ if the code doesn't break, we then add the item and its count to their respective lists """
+        """ if the code doesn't return, we then add the item and its count to their respective lists """
         self.item_list.append (item_name)
         self.item_count.append (1)
         self.item_v.append(self.draw_3D_inventory_block (len (self.item_count), 1, 0, item_name))

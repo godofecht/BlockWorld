@@ -378,13 +378,15 @@ class PlayerWindow (pyglet.window.Window):
         self.clear()
         self.set_3d()
         glColor3d (1, 1, 1)
-        self.inventory.draw()
+
         self.inventory.drawItems (self.model.batch, self.model.group, self.position, self.rotation)
         self.model.batch.draw()
+        self.inventory.draw()
         self.draw_focused_block()
         self.set_2d()
         self.draw_label()
         self.draw_reticle()
+
 
 
 
