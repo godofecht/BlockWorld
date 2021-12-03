@@ -192,6 +192,7 @@ class Inventory():
                 if self.item_count[i] <= 0:
                     del self.item_list[i]
                     del self.item_count[i]
+                    del self.item_vertices_list[i]
 
     def setIndex (self, i):
         self.index = i
