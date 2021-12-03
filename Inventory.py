@@ -63,9 +63,14 @@ class Inventory():
 
         offset_forward_vector = getForwardVector (yaw, pitch)
 
-        transformed_x = player_pos[0] + forward_vector.x * 10
-        transformed_y = player_pos[1] + forward_vector.y * 10
-        transformed_z = player_pos[2] - forward_vector.z * 10
+        if index == self.index: #maybe change self.index to self.currently_selected_index or something
+            projection_distance_factor = 8
+        else:
+            projection_distance_factor = 10
+
+        transformed_x = player_pos[0] + forward_vector.x * projection_distance_factor
+        transformed_y = player_pos[1] + forward_vector.y * projection_distance_factor
+        transformed_z = player_pos[2] - forward_vector.z * projection_distance_factor
 
         item_vertices.vertices = cube_vertices (transformed_x, transformed_y, transformed_z, 1)
         num_vertices = item_vertices.get_size() * 3
