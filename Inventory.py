@@ -184,6 +184,7 @@ class Inventory():
         """ if the code doesn't break, we then add the item and its count to their respective lists """
         self.item_list.append (item_name)
         self.item_count.append (1)
+        self.item_v.append(self.draw_3D_inventory_block (len (self.item_count), 1, 0, item_name))
 
     def removeItem (self, item_name):
         for i in range (0, len (self.item_list)):
@@ -192,7 +193,8 @@ class Inventory():
                 if self.item_count[i] <= 0:
                     del self.item_list[i]
                     del self.item_count[i]
-                    del self.item_vertices_list[i]
+                    del self.item_v[i]
+                    return
 
     def setIndex (self, i):
         self.index = i
