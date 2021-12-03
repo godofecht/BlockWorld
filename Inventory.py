@@ -13,7 +13,7 @@ class Inventory():
         self.InventoryXPos = (WIDTH - self.InventoryWidth ) / 2.0
         self.InventoryYPos = 40
         self.index = 0
-        self.batch = batch
+        self.batch = pyglet.graphics.Batch()
         self.group = group
         self.item_v = []
         self.item_v.append (self.draw_3D_inventory_block (0, 1, 0, GRASS))
@@ -28,6 +28,7 @@ class Inventory():
         return v
 
     def draw (self):
+        self.batch.draw()
         return
 #        glColor3f (1,0,0)
 #        draw_rect (self.InventoryXPos, self.InventoryYPos, self.InventoryWidth, self.InventoryHeight)
@@ -143,8 +144,8 @@ class Inventory():
     #        self.v.vertices[yvert] = self.v.vertices[yvert] + right_vector.y * 5
     #        self.v.vertices[zvert] = self.v.vertices[zvert] - right_vector.z * 5
 
-
-        """ now we have to move the cube into its respective slot """
+#        item_vertices.draw(pyglet.gl.GL_POINTS)
+    #    """ now we have to move the cube into its respective slot """
 
 
 
