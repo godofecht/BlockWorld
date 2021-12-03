@@ -6,8 +6,8 @@ from helpers import *
 """
 class Inventory():
     def __init__ (self, batch, group):
-        self.item_list = [GRASS,STONE]
-        self.item_count = [1,1]
+        self.item_list = [GRASS, STONE, SAND]
+        self.item_count = [1, 1, 1]
         self.InventoryWidth = WIDTH * 0.7
         self.InventoryHeight = HEIGHT * 0.1
         self.InventoryXPos = (WIDTH - self.InventoryWidth ) / 2.0
@@ -18,6 +18,7 @@ class Inventory():
         self.item_v = []
         self.item_v.append (self.draw_3D_inventory_block (0, 1, 0, GRASS))
         self.item_v.append (self.draw_3D_inventory_block (1, 1, 0, STONE))
+        self.item_v.append (self.draw_3D_inventory_block (2, 1, 0, SAND))
 
 
     def draw_3D_inventory_block (self, x, y, z, texture):
@@ -159,6 +160,10 @@ class Inventory():
 
     def drawItems (self, batch, group, player_pos, camera_rot):
         """ maybe I should wrap batch and group as another object"""
+
+        self.player_pos = player_pos
+        self.camera_rot = camera_rot
+
         for index in range (0, len (self.item_list)):
             self.drawIndividualItem (index, group, player_pos, camera_rot, self.item_v[index])
         return
@@ -177,16 +182,23 @@ class Inventory():
         """ if the code doesn't return, we then add the item and its count to their respective lists """
         self.item_list.append (item_name)
         self.item_count.append (1)
-        self.item_v.append(self.draw_3D_inventory_block (len (self.item_count), 1, 0, item_name))
+        self.item_v.append (self.draw_3D_inventory_block (len (self.item_count), 1, 0, item_name))
+
 
     def removeItem (self, item_name):
+
+
         for i in range (0, len (self.item_list)):
             if (self.item_list[i] == item_name):
                 self.item_count[i] = self.item_count[i] - 1
                 if self.item_count[i] <= 0:
+                    self.item_v.clear()
                     del self.item_list[i]
                     del self.item_count[i]
-                    del self.item_v[i]
+                    self.batch = None
+                    self.batch = pyglet.graphics.Batch()
+                    for i in range (0, len (self.item_list)):
+                        self.item_v.append (self.draw_3D_inventory_block (len (self.item_list), 1, 0, self.item_list[i]))
                     return
 
     def setIndex (self, i):

@@ -22,14 +22,14 @@ class Model(object):
         self.queue = deque()
         self._initialize()
 
-    def _initialize(self):
+    def _initialize (self):
         """ Initialize the world by placing all the blocks.
         """
-        n = 80  # 1/2 width and height of world
+        n = 30  # 1/2 width and height of world
         s = 1  # step size
         y = 0  # initial y height
-        GenerateFlatland(self,n,s,y)
-        #GenerateHills(self,n)
+        GenerateFlatland (self, n, s, y)
+        GenerateHills (self,n)
         #
         # # generate the hills randomly
 
