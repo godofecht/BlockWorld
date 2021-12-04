@@ -21,6 +21,7 @@ class Inventory():
         self.item_v.append (self.draw_3D_inventory_block (2, 1, 0, SAND))
 
 
+
     def draw_3D_inventory_block (self, x, y, z, texture):
         vertex_data = cube_vertices (x, y, z, 1)
         self.batch.invalidate()
@@ -31,8 +32,11 @@ class Inventory():
     def draw (self):
         self.batch.draw()
         return
-#        glColor3f (1,0,0)
-#        draw_rect (self.InventoryXPos, self.InventoryYPos, self.InventoryWidth, self.InventoryHeight)
+
+    #convert this to a separate HUD class later with its own batch
+    def drawHUD (self, current_health):
+        glColor3f (1,0,0)
+        draw_rect (WIDTH - 220, HEIGHT - 40, 200 * current_health / 100., 30)
 
     def drawIndividualItem (self, index, group, player_pos, camera_rot, item_vertices):
         """ I think that inventory items should be drawn either as 2D sprites or 3D icons. I'm not

@@ -20,7 +20,8 @@ def GenerateHills(self,n):
             h = random.randint(1, 6)  # height of the hill
             s = random.randint(4, 8)  # 2 * s is the side length of the hill
             d = 1  # how quickly to taper off the hills
-            t = random.choice([GRASS, SAND, BRICK])
+#            t = random.choice([GRASS, SAND, BRICK])
+            t = GRASS
             for y in xrange(c, c + h):
                 for x in xrange(a - s, a + s + 1):
                     for z in xrange(b - s, b + s + 1):

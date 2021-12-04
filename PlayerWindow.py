@@ -44,7 +44,7 @@ class PlayerWindow (pyglet.window.Window):
         # Velocity in the y (upward) direction.
         self.dy = 0
 
-
+        self.health = 100
 
         # Convenience list of num keys.
         self.num_keys = [
@@ -177,6 +177,8 @@ class PlayerWindow (pyglet.window.Window):
                     if face == (0, -1, 0) or face == (0, 1, 0):
                         # You are colliding with the ground or ceiling, so stop
                         # falling / rising.
+                        if(self.dy < -3): #Will need to change this PRT to max jump height before injury
+                            self.health = 0
                         self.dy = 0
                     break
         return tuple(p)
@@ -390,6 +392,7 @@ class PlayerWindow (pyglet.window.Window):
         self.set_2d()
         self.draw_label()
         self.draw_reticle()
+        self.inventory.drawHUD (self.health)
 
 
 

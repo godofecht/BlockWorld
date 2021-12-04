@@ -25,7 +25,7 @@ class Model(object):
     def _initialize (self):
         """ Initialize the world by placing all the blocks.
         """
-        n = 30  # 1/2 width and height of world
+        n = 50  # 1/2 width and height of world
         s = 1  # step size
         y = 0  # initial y height
         GenerateFlatland (self, n, s, y)
@@ -34,7 +34,7 @@ class Model(object):
         # # generate the hills randomly
 
 
-    def hit_test(self, position, vector, max_distance=8):
+    def hit_test (self, position, vector, max_distance=8):
         """ Line of sight search from current position. If a block is
         intersected it is returned, along with the block previously in the line
         of sight. If no block is found, return None, None.
@@ -51,8 +51,8 @@ class Model(object):
         x, y, z = position
         dx, dy, dz = vector
         previous = None
-        for _ in xrange(max_distance * m):
-            key = normalize((x, y, z))
+        for _ in xrange (max_distance * m):
+            key = normalize ((x, y, z))
             if key != previous and key in self.world:
                 return key, previous
             previous = key
@@ -84,13 +84,13 @@ class Model(object):
         if position in self.world:
             self.remove_block (position, immediate)
         self.world[position] = texture
-        self.sectors.setdefault(sectorize(position), []).append(position)
+        self.sectors.setdefault (sectorize (position), []).append (position)
         if immediate:
-            if self.exposed(position):
-                self.show_block(position)
-            self.check_neighbors(position)
+            if self.exposed (position):
+                self.show_block (position)
+            self.check_neighbors (position)
 
-    def remove_block(self, position, immediate=True):
+    def remove_block (self, position, immediate=True):
         """ Remove the block at the given `position`.
         Parameters
         ----------
@@ -100,11 +100,11 @@ class Model(object):
             Whether or not to immediately remove block from canvas.
         """
         del self.world[position]
-        self.sectors[sectorize(position)].remove(position)
+        self.sectors[sectorize (position)].remove (position)
         if immediate:
             if position in self.shown:
-                self.hide_block(position)
-            self.check_neighbors(position)
+                self.hide_block (position)
+            self.check_neighbors (position)
 
 
     def check_neighbors(self, position):
