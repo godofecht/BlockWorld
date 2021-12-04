@@ -81,7 +81,7 @@ class PlayerWindow (pyglet.window.Window):
         super(PlayerWindow, self).set_exclusive_mouse(exclusive)
         self.exclusive = exclusive
 
-    def update(self, dt):
+    def update (self, dt):
         """ This method is scheduled to be called repeatedly by the pyglet
         clock.
 
@@ -92,9 +92,9 @@ class PlayerWindow (pyglet.window.Window):
 
         """
         self.model.process_queue()
-        sector = sectorize(self.position)
+        sector = sectorize (self.position)
         if sector != self.sector:
-            self.model.change_sectors(self.sector, sector)
+            self.model.change_sectors (self.sector, sector)
             if self.sector is None:
                 self.model.process_entire_queue()
             self.sector = sector
@@ -177,7 +177,7 @@ class PlayerWindow (pyglet.window.Window):
                     if face == (0, -1, 0) or face == (0, 1, 0):
                         # You are colliding with the ground or ceiling, so stop
                         # falling / rising.
-                        if(self.dy < -3): #Will need to change this PRT to max jump height before injury
+                        if(self.dy < -3): #Will need to change '3' PRT to max jump height before injury
                             self.health = 0
                         self.dy = 0
                     break

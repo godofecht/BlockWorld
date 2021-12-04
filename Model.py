@@ -7,7 +7,7 @@ class Model(object):
         # A Batch is a collection of vertex lists for batched rendering.
         self.batch = pyglet.graphics.Batch()
         # A TextureGroup manages an OpenGL texture.
-        self.group = TextureGroup(image.load(TEXTURE_PATH).get_texture())
+        self.group = TextureGroup (image.load (TEXTURE_PATH).get_texture())
         # A mapping from position to the texture of the block at that position.
         # This defines all the blocks that are currently in the world.
         self.world = {}
@@ -25,11 +25,12 @@ class Model(object):
     def _initialize (self):
         """ Initialize the world by placing all the blocks.
         """
-        n = 50  # 1/2 width and height of world
+        n = 20  # 1/2 width and height of world
         s = 1  # step size
         y = 0  # initial y height
-        GenerateFlatland (self, n, s, y)
-        GenerateHills (self,n)
+        GenerateLandFromBlockList (self, GeneratePerlinNoise (self, n, s, y), n, s, y)
+#        GenerateFlatland (self, n, s, y)
+#        GenerateHills (self,n)
         #
         # # generate the hills randomly
 
@@ -59,7 +60,7 @@ class Model(object):
             x, y, z = x + dx / m, y + dy / m, z + dz / m
         return None, None
 
-    def exposed(self, position):
+    def exposed (self, position):
         """ Returns False is given `position` is surrounded on all 6 sides by
         blocks, True otherwise.
         """
@@ -69,7 +70,7 @@ class Model(object):
                 return True
         return False
 
-    def add_block(self, position, texture, immediate=True):
+    def add_block (self, position, texture, immediate = True):
         """ Add a block with the given `texture` and `position` to the world.
         Parameters
         ----------
@@ -90,7 +91,7 @@ class Model(object):
                 self.show_block (position)
             self.check_neighbors (position)
 
-    def remove_block (self, position, immediate=True):
+    def remove_block (self, position, immediate = True):
         """ Remove the block at the given `position`.
         Parameters
         ----------

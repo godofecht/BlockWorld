@@ -1,6 +1,7 @@
 from helpers import *
+import matplotlib.pyplot as plt
 
-def GenerateFlatland(self,n,s,y):
+def GenerateFlatland (self, n, s, y):
   for x in xrange(-n, n + 1, s):
      for z in xrange(-n, n + 1, s):
          # create a layer stone an grass everywhere.
@@ -11,7 +12,7 @@ def GenerateFlatland(self,n,s,y):
              for dy in xrange(-2, 3):
                  self.add_block((x, y + dy, z), STONE, immediate=False)
 
-def GenerateHills(self,n):
+def GenerateHills (self, n):
         o = n - 10
         for _ in xrange(120):
             a = random.randint(-o, o)  # x position of the hill
@@ -31,3 +32,38 @@ def GenerateHills(self,n):
                             continue
                         self.add_block((x, y, z), t, immediate=False)
                 s -= d  # decrement side lenth so hills taper off
+
+def GenerateFlatLandBlockList (self, n, s):
+    blockList = []
+    for x in xrange(-n, n + 1, s):
+        for z in xrange(-n, n + 1, s):
+            blockList.append (GRASS)
+    return blockList
+
+def GenerateLandFromBlockList (self, noise, n, s, y):
+    for x in xrange(-n, n + 1, s):
+        for z in xrange(-n, n + 1, s):
+    #            self.add_block((x, noise[x, z] - 3, z), GRASS, immediate=False)
+                for block_height in xrange(-10, int (noise[x, z]) - 3, s):
+                    self.add_block((x, block_height, z), GRASS, immediate=False)
+
+
+def GeneratePerlinNoise (self, n, s, y):
+    blockList = []
+    lin = np.linspace (0, 4, n*2, endpoint=False)
+    x, z = np.meshgrid (lin,lin) # FIX3: I thought I had to invert x and y here but it was a mistake
+    current_time = time.time()
+    r = int (random.random () * 1000)
+    noise = perlin(x, z, r)
+    for x in xrange(-n, n + 1, s):
+        for z in xrange(-n, n + 1, s):
+            noise[x, z] = - math.floor (noise[x,z] * 4.5)
+
+            for y in xrange(-y, y + 1, s):
+                if (noise[x, z] == y):
+                    blockList.append (GRASS)
+
+            print(noise[x, z])
+#            self.add_block ((x, noise[x,z] - 2.0, z), GRASS, immediate = False)
+    print(len(blockList))
+    return noise
