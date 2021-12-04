@@ -1,5 +1,5 @@
 from helpers import *
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 def GenerateFlatland (self, n, s, y):
   for x in xrange(-n, n + 1, s):
