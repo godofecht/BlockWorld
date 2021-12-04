@@ -41,11 +41,12 @@ def GenerateFlatLandBlockList (self, n, s):
     return blockList
 
 def GenerateLandFromBlockList (self, noise, n, s, y):
+    biomeBlockTypeList = GenerateBiomeNoise (self, n, s, y)
     for x in xrange(-n, n + 1, s):
         for z in xrange(-n, n + 1, s):
     #            self.add_block((x, noise[x, z] - 3, z), GRASS, immediate=False)
                 for block_height in xrange(-10, int (noise[x, z]) - 3, s):
-                    self.add_block((x, block_height, z), GRASS, immediate=False)
+                    self.add_block((x, block_height, z), biomeBlockTypeList[x * 2 * n + z], immediate=False)
 
 
 def GeneratePerlinNoise (self, n, s, y):
@@ -67,3 +68,26 @@ def GeneratePerlinNoise (self, n, s, y):
 #            self.add_block ((x, noise[x,z] - 2.0, z), GRASS, immediate = False)
     print(len(blockList))
     return noise
+
+def GenerateBiomeNoise (self, n, s, y):
+    blockTypeList = []
+    for i in range(0, n*2):
+        for j in range(0, n*2):
+            blockTypeList.append (GRASS)
+    lin = np.linspace (0, 1, n*2, endpoint=False)
+    x, z = np.meshgrid (lin,lin) # FIX3: I thought I had to invert x and y here but it was a mistake
+    current_time = time.time()
+    r = int (random.random () * 1000)
+    noise = perlin (x, z, r)
+    for x in xrange (-n, n + 1, s):
+        for z in xrange (-n, n + 1, s):
+            noise[x, z] = - math.floor (noise[x,z] * 4.5)
+
+            if (noise[x, z] == 2):
+                blockTypeList[int(x * n * 2 + z)] = GRASS
+            else:
+                blockTypeList[int(x * n * 2 + z)] = SAND
+
+            print  (noise[x, z])
+#            self.add_block ((x, noise[x,z] - 2.0, z), GRASS, immediate = False)
+    return blockTypeList
