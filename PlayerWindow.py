@@ -15,6 +15,10 @@ class PlayerWindow (pyglet.window.Window):
         # When flying gravity has no effect and speed is increased.
         self.flying = False
 
+
+        self.MOVE_SPEED = WALKING_SPEED
+
+
         # Strafing is moving lateral to the direction you are facing,
         # e.g. moving to the left or right while continuing to face forward.
         #
@@ -114,9 +118,10 @@ class PlayerWindow (pyglet.window.Window):
 
         """
         # walking
-        speed = FLYING_SPEED if self.flying else WALKING_SPEED
+        speed = FLYING_SPEED if self.flying else self.MOVE_SPEED
         d = dt * speed # distance covered this tick.
         dx, dy, dz = get_motion_vector(self)
+
         # New position in space, before accounting for gravity.
         dx, dy, dz = dx * d, dy * d, dz * d
         # gravity
@@ -291,7 +296,10 @@ class PlayerWindow (pyglet.window.Window):
             self.strafe[1] += 1
         elif symbol == key.SPACE:
             if self.dy == 0:
-                self.dy = JUMP_SPEED
+                self.dy = Settings.JUMP_SPEED
+        elif symbol == key.LSHIFT:
+            self.MOVE_SPEED = Settings.RUNNING_SPEED
+#            print(self.MOVE_SPEED)
         elif symbol == key.ESCAPE:
             self.set_exclusive_mouse(False)
         elif symbol == key.TAB:
@@ -321,7 +329,8 @@ class PlayerWindow (pyglet.window.Window):
             self.strafe[1] += 1
         elif symbol == key.D:
             self.strafe[1] -= 1
-
+        elif symbol == key.LSHIFT:
+            self.MOVE_SPEED = WALKING_SPEED
 
 ##################################################################################
 

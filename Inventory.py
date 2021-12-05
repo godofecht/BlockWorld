@@ -20,6 +20,7 @@ class Inventory():
         self.item_v.append (self.draw_3D_inventory_block (1, 1, 0, STONE))
         self.item_v.append (self.draw_3D_inventory_block (2, 1, 0, SAND))
 
+        self.pos_z = 0
 
 
     def draw_3D_inventory_block (self, x, y, z, texture):
@@ -76,6 +77,7 @@ class Inventory():
         num_vertices = item_vertices.get_size() * 3
         center_pos = getCenterOfVertices (item_vertices, num_vertices)
 
+        self.pos_z += 1
 
         for index in range (0, num_vertices, 3):
             xvert = index
@@ -86,7 +88,7 @@ class Inventory():
             rotated_vector = rotatePoint ((item_vertices.vertices[xvert],
                                            item_vertices.vertices[yvert],
                                            item_vertices.vertices[zvert]),
-                                           (rot_offsety, -rot_offsetx, 0),
+                                           (rot_offsety + 10, -rot_offsetx + 10, 0),
                                            center_pos)
 
             item_vertices.vertices[xvert] = rotated_vector[0]

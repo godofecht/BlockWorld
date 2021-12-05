@@ -51,10 +51,10 @@ def GenerateLandFromBlockList (self, noise, n, s, y):
 
 def GeneratePerlinNoise (self, n, s, y):
     blockList = []
-    lin = np.linspace (0, 10, n*2, endpoint=False)
+    lin = np.linspace (0, 20, n*2, endpoint=False)
     x, z = np.meshgrid (lin,lin) # FIX3: I thought I had to invert x and y here but it was a mistake
     current_time = time.time()
-    r = int (random.random () * 1000)
+    r = int (random.random () * int(current_time) * 1000) %  (2**32 - 1)
     noise = perlin(x, z, r)
     for x in xrange (0, 2*n, s):
         for z in xrange (0, 2*n, s):
@@ -87,7 +87,7 @@ def GenerateBiomeNoise (self, n, s, y):
     lin = np.linspace (0, 2, n*2, endpoint=False)
     x, z = np.meshgrid (lin,lin) # FIX3: I thought I had to invert x and y here but it was a mistake
     current_time = time.time()
-    r = int (random.random () * 1000)
+    r = int (random.random () * int(current_time) * 1000) %  (2**32 - 1)
     noise = perlin (x, z, r)
     for x in xrange (0, 2*n, s):
         for z in xrange (0, 2*n, s):

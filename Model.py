@@ -25,7 +25,7 @@ class Model(object):
     def _initialize (self):
         """ Initialize the world by placing all the blocks.
         """
-        n = 50  # 1/2 width and height of world
+        n = int(WORLD_SIZE/2)  # 1/2 width and height of world
         s = 1  # step size
         y = 0  # initial y height
         GenerateLandFromBlockList (self, GeneratePerlinNoise (self, n, s, y), n, s, y)

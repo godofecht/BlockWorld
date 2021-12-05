@@ -21,6 +21,9 @@ height = 480
 
 WALKING_SPEED = 5
 FLYING_SPEED = 15
+RUNNING_SPEED = 15
+
+
 
 GRAVITY = 20.0
 MAX_JUMP_HEIGHT = 1.0 # About the height of a block.
@@ -36,6 +39,9 @@ TERMINAL_VELOCITY = 50
 
 PLAYER_HEIGHT = 2
 
+
+WORLD_SIZE = 500
+
 ######OPENGL...Setup########################
 def setup_fog():
     """ Configure the OpenGL fog properties.
@@ -43,7 +49,7 @@ def setup_fog():
     """
     # Enable fog. Fog "blends a fog color with each rasterized pixel fragment's
     # post-texturing color."
-    glEnable(GL_FOG)
+"""    glEnable(GL_FOG)
     # Set the fog color.
     glFogfv(GL_FOG_COLOR, (GLfloat * 4)(0.5, 0.69, 1.0, 1))
     # Say we have no preference between rendering speed and quality.
@@ -54,7 +60,7 @@ def setup_fog():
     # the denser the fog in the fog range.
     glFogf(GL_FOG_START, 20.0)
     glFogf(GL_FOG_END, 60.0)
-
+"""
 
 def setup():
     """ Basic OpenGL configuration.
