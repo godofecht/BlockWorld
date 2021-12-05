@@ -40,7 +40,7 @@ TERMINAL_VELOCITY = 50
 PLAYER_HEIGHT = 2
 
 
-WORLD_SIZE = 500
+WORLD_SIZE = 10
 
 ######OPENGL...Setup########################
 def setup_fog():
@@ -49,7 +49,7 @@ def setup_fog():
     """
     # Enable fog. Fog "blends a fog color with each rasterized pixel fragment's
     # post-texturing color."
-"""    glEnable(GL_FOG)
+    glEnable(GL_FOG)
     # Set the fog color.
     glFogfv(GL_FOG_COLOR, (GLfloat * 4)(0.5, 0.69, 1.0, 1))
     # Say we have no preference between rendering speed and quality.
@@ -60,14 +60,17 @@ def setup_fog():
     # the denser the fog in the fog range.
     glFogf(GL_FOG_START, 20.0)
     glFogf(GL_FOG_END, 60.0)
-"""
+
 
 def setup():
     """ Basic OpenGL configuration.
 
     """
     # Set the color of "clear", i.e. the sky, in rgba.
-    glClearColor (0.5, 0.69, 1.0, 1)
+#    glClearColor (0.5, 0.69, 1.0, 1)
+
+    glClearColor (1.0, 0.09, 0.3, 1)
+
     # Enable culling (not rendering) of back-facing facets -- facets that aren't
     # visible to you.
     glEnable (GL_CULL_FACE)
@@ -78,4 +81,4 @@ def setup():
     # as smooth."
     glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
     glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-    setup_fog()
+#    setup_fog()

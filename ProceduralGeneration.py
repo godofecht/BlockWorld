@@ -44,9 +44,9 @@ def GenerateLandFromBlockList (self, noise, n, s, y):
     biomeBlockTypeList = GenerateBiomeNoise (self, n, s, y)
     for x in xrange(-n, n + 1, s):
         for z in xrange(-n, n + 1, s):
-    #            self.add_block((x, noise[x, z] - 3, z), GRASS, immediate=False)
-                for block_height in xrange(-10, int (noise[x, z]) - 3, s):
-                    self.add_block((x, block_height, z), biomeBlockTypeList[x * 2 * n + z], immediate=False)
+                self.add_block((x, int (noise[x, z]) - 3, z), biomeBlockTypeList[x * 2 * n + z], immediate=False)
+                for block_height in xrange(-100, int (noise[x, z]) - 3, s):
+                    self.add_block((x, block_height, z), DIRT, immediate=False)
 
 
 def GeneratePerlinNoise (self, n, s, y):
@@ -62,7 +62,7 @@ def GeneratePerlinNoise (self, n, s, y):
 
             for y in xrange(-y, y + 1, s):
                 if (noise[x, z] == y):
-                    blockList.append (GRASS)
+                    blockList.append (DIRT)
 
 #            print(noise[x, z])
 #            self.add_block ((x, noise[x,z] - 2.0, z), GRASS, immediate = False)
