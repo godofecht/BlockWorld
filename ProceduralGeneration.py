@@ -78,8 +78,8 @@ def get_gradient_3d(width, height, start_list, stop_list, is_horizontal_list):
     return result
 
 def GenerateBiomeNoise (self, n, s, y):
-    array = get_gradient_3d (n * 2, n * 2, (0, 0, 0), (255, 255, 255), (True, True, True))
-    print (array)
+    array = get_gradient_2d (0, 255, n * 2, n * 2, True)
+#    print (array)
     blockTypeList = []
     for i in range(0, n*2):
         for j in range(0, n*2):
@@ -91,13 +91,13 @@ def GenerateBiomeNoise (self, n, s, y):
     noise = perlin (x, z, r)
     for x in xrange (0, 2*n, s):
         for z in xrange (0, 2*n, s):
-            array[x, z, 0] = - math.floor (array[x, z, 0] * 4.5)
+#            array[x, z] = - math.floor (array[x, z] * 4.5)
 
-            if (array[x, z, 1] < (255/3.)):
+            if (array[x, z] < (255/3.)):
                 blockTypeList[int(x * n * 2 + z)] = GRASS
-            elif (array[x, z, 1] < (255/3. * 2.)):
+            elif (array[x, z] < (255/3. * 2.)):
                 blockTypeList[int(x * n * 2 + z)] = SAND
-            elif (array[x, z, 1] < (255/3. * 3.)):
+            elif (array[x, z] < (255/3. * 3.)):
                 blockTypeList[int(x * n * 2 + z)] = BRICK
 
 #            print  (noise[x, z])
