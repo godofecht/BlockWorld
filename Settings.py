@@ -16,12 +16,17 @@ from pyglet.window import key, mouse
 MOUSE_MOVEMENT_SPEED_x = 10;
 MOUSE_MOVEMENT_SPEED_Y = 10;
 
-width = 640
-height = 480
+
 
 WALKING_SPEED = 5
 FLYING_SPEED = 15
 RUNNING_SPEED = 15
+
+
+#Window Params
+
+WIDTH = 1920
+HEIGHT = 1080
 
 
 
@@ -40,7 +45,8 @@ TERMINAL_VELOCITY = 50
 PLAYER_HEIGHT = 2
 
 
-WORLD_SIZE = 10
+WORLD_SIZE = 100
+WORLD_HEIGHT = 10
 
 ######OPENGL...Setup########################
 def setup_fog():

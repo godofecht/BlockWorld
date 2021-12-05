@@ -157,10 +157,7 @@ def draw_rect(x, y, width, height):
                          ('v2f', [x, y, x + width, y, x + width, y + height, x, y + height]))
 
 
-#Window Params
 
-WIDTH = 1000
-HEIGHT = 800
 
 
 ###############################
@@ -354,13 +351,13 @@ def rotatePointWithOffset (pos_vector, rot_vector, center, rot_offset):
     vY = pos_vector[1] - center[1]
     vZ = pos_vector[2] - center[2]
 
-    rX = math.radians (rot_vector[0]) + math.radians(rot_offset[0])
-    rY = math.radians (rot_vector[1]) + math.radians(rot_offset[1])
-    rZ = math.radians (rot_vector[2]) + math.radians(rot_offset[2])
+    rX = math.radians (rot_vector[0]) + math.radians (rot_offset[0])
+    rY = math.radians (rot_vector[1]) + math.radians (rot_offset[1])
+    rZ = math.radians (rot_vector[2]) + math.radians (rot_offset[2])
 
-    print("rX:" + str(math.degrees(rX)))
-    print("rY:" + str(math.degrees(rY)))
-    print("rZ:" + str(math.degrees(rZ)))
+    print ("rX:" + str (math.degrees(rX)))
+    print ("rY:" + str (math.degrees(rY)))
+    print ("rZ:" + str (math.degrees(rZ)))
 
     #vX,vY,vZ is the vector coords
     #rx,rY,rZ is the rotation angles in radians
@@ -389,6 +386,12 @@ DIRT  = tex_coords ((0, 1), (0, 1), (0, 1))
 SAND  = tex_coords ((1, 1), (1, 1), (1, 1))
 BRICK = tex_coords ((2, 0), (2, 0), (2, 0))
 STONE = tex_coords ((2, 1), (2, 1), (2, 1))
+JAIL  = tex_coords ((3, 0), (3, 0), (3, 0))
+ICE   = tex_coords ((3, 2), (3, 2), (3, 2))
+GLASS = tex_coords ((3, 1), (3, 1), (3, 1))
+MUD   = tex_coords ((2, 2), (2, 2), (2, 2))
+EVIL_BLOCK = tex_coords ((3, 0), (3, 0), (3, 0))
+
 
 FACES = [
     ( 0, 1, 0),

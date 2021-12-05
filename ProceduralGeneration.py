@@ -45,8 +45,9 @@ def GenerateLandFromBlockList (self, noise, n, s, y):
     for x in xrange(-n, n + 1, s):
         for z in xrange(-n, n + 1, s):
                 self.add_block((x, int (noise[x, z]) - 3, z), biomeBlockTypeList[x * 2 * n + z], immediate=False)
-                for block_height in xrange(-100, int (noise[x, z]) - 3, s):
+                for block_height in xrange(-WORLD_HEIGHT, int (noise[x, z]) - 3, s):
                     self.add_block((x, block_height, z), DIRT, immediate=False)
+                self.add_block((x, -WORLD_HEIGHT - 1, z), STONE, immediate=False)
 
 
 def GeneratePerlinNoise (self, n, s, y):
@@ -69,12 +70,10 @@ def GeneratePerlinNoise (self, n, s, y):
 #    print(len(blockList))
     return noise
 
-def get_gradient_3d(width, height, start_list, stop_list, is_horizontal_list):
-    result = np.zeros((height, width, len(start_list)), dtype=np.float)
-
-    for i, (start, stop, is_horizontal) in enumerate(zip(start_list, stop_list, is_horizontal_list)):
-        result[:, :, i] = get_gradient_2d(start, stop, width, height, is_horizontal)
-
+def get_gradient_3d (width, height, start_list, stop_list, is_horizontal_list):
+    result = np.zeros ((height, width, len (start_list)), dtype = np.float)
+    for i, (start, stop, is_horizontal) in enumerate (zip (start_list, stop_list, is_horizontal_list)):
+        result[:, :, i] = get_gradient_2d (start, stop, width, height, is_horizontal)
     return result
 
 def GenerateBiomeNoise (self, n, s, y):
@@ -87,26 +86,32 @@ def GenerateBiomeNoise (self, n, s, y):
     lin = np.linspace (0, 2, n*2, endpoint=False)
     x, z = np.meshgrid (lin,lin) # FIX3: I thought I had to invert x and y here but it was a mistake
     current_time = time.time()
-    r = int (random.random () * int(current_time) * 1000) %  (2**32 - 1)
+    r = int (random.random () * int (current_time) * 1000) %  (2**32 - 1)
     noise = perlin (x, z, r)
     for x in xrange (0, 2*n, s):
         for z in xrange (0, 2*n, s):
 #            array[x, z] = - math.floor (array[x, z] * 4.5)
 
-            if (array[x, z] < (255/3.)):
+            if (array[x, z] < (255/6.)):
                 blockTypeList[int(x * n * 2 + z)] = GRASS
-            elif (array[x, z] < (255/3. * 2.)):
+            elif (array[x, z] < (255/6. * 2.)):
                 blockTypeList[int(x * n * 2 + z)] = SAND
-            elif (array[x, z] < (255/3. * 3.)):
-                blockTypeList[int(x * n * 2 + z)] = BRICK
+            elif (array[x, z] < (255/6. * 3.)):
+                blockTypeList[int(x * n * 2 + z)] = MUD
+            elif (array[x, z] < (255/6. * 4.)):
+                blockTypeList[int(x * n * 2 + z)] = GLASS
+            elif (array[x, z] < (255/6. * 5.)):
+                blockTypeList[int(x * n * 2 + z)] = JAIL
+            elif (array[x, z] < (255/6. * 6.)):
+                blockTypeList[int(x * n * 2 + z)] = ICE
 
 #            print  (noise[x, z])
 #            self.add_block ((x, noise[x,z] - 2.0, z), GRASS, immediate = False)
     return blockTypeList
 
 
-def get_gradient_2d(start, stop, width, height, is_horizontal):
+def get_gradient_2d (start, stop, width, height, is_horizontal):
     if is_horizontal:
-        return np.tile(np.linspace(start, stop, width), (height, 1))
+        return np.tile (np.linspace (start, stop, width), (height, 1))
     else:
-        return np.tile(np.linspace(start, stop, height), (width, 1)).T
+        return np.tile (np.linspace (start, stop, height), (width, 1)).T

@@ -6,8 +6,8 @@ from helpers import *
 """
 class Inventory():
     def __init__ (self, batch, group):
-        self.item_list = [GRASS, STONE, SAND]
-        self.item_count = [1, 1, 1]
+        self.item_list = []
+        self.item_count = []
         self.InventoryWidth = WIDTH * 0.7
         self.InventoryHeight = HEIGHT * 0.1
         self.InventoryXPos = (WIDTH - self.InventoryWidth ) / 2.0
@@ -16,9 +16,6 @@ class Inventory():
         self.batch = pyglet.graphics.Batch()
         self.group = group
         self.item_v = []
-        self.item_v.append (self.draw_3D_inventory_block (0, 1, 0, GRASS))
-        self.item_v.append (self.draw_3D_inventory_block (1, 1, 0, STONE))
-        self.item_v.append (self.draw_3D_inventory_block (2, 1, 0, SAND))
 
         self.pos_z = 0
 
@@ -88,7 +85,7 @@ class Inventory():
             rotated_vector = rotatePoint ((item_vertices.vertices[xvert],
                                            item_vertices.vertices[yvert],
                                            item_vertices.vertices[zvert]),
-                                           (rot_offsety + 10, -rot_offsetx + 10, 0),
+                                           (rot_offsety, -rot_offsetx, 0),
                                            center_pos)
 
             item_vertices.vertices[xvert] = rotated_vector[0]
