@@ -19,6 +19,8 @@ class Inventory():
 
         self.pos_z = 0
 
+    def scrollIndex (self, scrollValue):
+        self.index = (self.index - scrollValue) % len (self.item_list)
 
     def draw_3D_inventory_block (self, x, y, z, texture):
         vertex_data = cube_vertices (x, y, z, 1)

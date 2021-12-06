@@ -273,6 +273,8 @@ class PlayerWindow (pyglet.window.Window):
     #    else:
     #        self.set_exclusive_mouse(True)
 
+    def on_mouse_scroll(self, x, y, scroll_x, scroll_y):
+        self.inventory.scrollIndex (scroll_y)
 
     def on_key_press (self, symbol, modifiers):
         """ Called when the player presses a key. See pyglet docs for key
