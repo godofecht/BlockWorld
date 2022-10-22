@@ -11,7 +11,7 @@ adding support for 3D objects, and more.
 Since Mojave 10.14, Apple has decided to stop supporting OpenGL. As a result, the draw function results in a blank screen, and attempts to run the existing function results in extremely odd and irregular depth buffering. Shame on you, Apple. I'll probably port PyGL to Metal at a later point.
 
 
-<img src='https://github.com/BlockWorld/screenshots/image1.jpg'/>
+<img src='https://github.com/godofecht/BlockWorld/screenshots/image1.jpg'/>
 
 
 
