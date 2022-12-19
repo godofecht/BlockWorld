@@ -1,7 +1,8 @@
 Welcome to BlockWorld!
 
 Blockworld is a block-based voxel game in Python that was written using Pyglet.
-It is a heavily modified and improved version of Fogleman's Minecraft in Python, on Github.
+
+Originally based on Fogleman's minecraft. Heavily improved. Heavily.
 
 I plan for the code to be organized into the form of an engine that hobbyists can use to write their own games. This would probably involve porting to C++,
 adding support for 3D objects, and more.
